@@ -1,4 +1,4 @@
-# Mealbot Scraper
+# Scraper
 
 Scrapes NUS Daily Menu pdfs for RC meal plan data.
 
