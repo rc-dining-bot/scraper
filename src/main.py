@@ -25,8 +25,13 @@ def get_menu(start_date, num_days, db):
         breakfast, dinner = parser.parse_menu(file_name)
         if breakfast:
             breakfast_ops.append(breakfast)
+        else:
+            logging.warning(f"No breakfast available on {str(date_to_search)}")
+
         if dinner:
             dinner_ops.append(dinner)
+        else:
+            logging.warning(f"No dinner available on {str(date_to_search)}")
 
         os.remove(file_name)
 
@@ -36,5 +41,6 @@ def get_menu(start_date, num_days, db):
 
 if __name__ == '__main__':
     load_dotenv()
+    # logging.basicConfig(level=logging.WARNING)
     db = Database()
     get_menu(datetime.date.today(), 7, db)  # run on sundays

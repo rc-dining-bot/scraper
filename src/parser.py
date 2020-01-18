@@ -23,7 +23,7 @@ def parse_file_name_for_date(file_name):
 
 def parse_menu_to_df(file_name):
     '''returns a dataframe containing the breakfast and dinner menus'''
-    df = read_pdf(file_name, pages='1', multiple_tables=True)
+    df = read_pdf(file_name, pages='1', multiple_tables=True, lattice=True)
     return df
 
 
