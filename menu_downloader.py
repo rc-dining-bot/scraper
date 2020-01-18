@@ -41,7 +41,8 @@ def send_request_for_menu_pdf(url):
     content_type = response.headers['Content-Type']
     if content_type != 'application/pdf':
         # Didn't get what we want, probably blocked by Incapsula
-        logging.error('Failed to get menu from %s, got Content-Type %s', url, content_type)
+        logging.error(
+            'Failed to get menu from %s, got Content-Type %s', url, content_type)
         logging.error('Response: %s', response.content)
         return None
 
@@ -57,7 +58,7 @@ def download_menu_pdf(date, filepath=None):
 
     # If request is not successful, abort
     if not response:
-        return
+        return None
 
     # Otherwise, save the pdf file
 
@@ -66,5 +67,8 @@ def download_menu_pdf(date, filepath=None):
         filepath = url.split('/')[-1]
 
     with open(filepath, 'wb') as file:
-        logging.info('Successfully downloaded menu for %s to %s', date, filepath)
+        logging.info('Successfully downloaded menu for %s to %s',
+                     date, filepath)
         file.write(response.content)
+
+    return filepath
