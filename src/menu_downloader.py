@@ -5,9 +5,8 @@ import requests
 
 def construct_menu_url(date):
     year = date.year
-    month = date.month
     timestamp = date.strftime('%y%m%d-%a')
-    return f'https://uci.nus.edu.sg/ohs/wp-content/uploads/sites/3/{year}/{month:02}/{timestamp}-Daily-Menu.pdf'
+    return f'https://uci.nus.edu.sg/ohs/wp-content/uploads/sites/3/{year}/01/{timestamp}-Daily-Menu.pdf'
 
 
 def send_request_for_menu_pdf(url):
