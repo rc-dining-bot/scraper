@@ -1,15 +1,16 @@
-from dotenv import load_dotenv
-import os
 import datetime
 import logging
+import os
 
-import menu_downloader
 import parser
+from dotenv import load_dotenv
+
+import menu_downloader as menu_downloader
 from database import Database
 
 
 def get_menu(start_date, num_days, db):
-    '''download, parse and upload menu to mongodb'''
+    """download, parse and upload menu to mongodb"""
     breakfast_ops = []
     dinner_ops = []
     for i in range(num_days):

@@ -1,6 +1,3 @@
-from math import isnan
-
-
 class Breakfast:
     def __init__(self, df, date):
         """hardcode mapping of value to key"""

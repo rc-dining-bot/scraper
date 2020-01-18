@@ -1,6 +1,7 @@
-import pymongo
 import logging
 import os
+
+import pymongo
 
 
 class Database:

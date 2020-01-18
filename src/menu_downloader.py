@@ -61,7 +61,7 @@ def download_menu_pdf(date, filepath=None):
 
     # Otherwise, save the pdf file
 
-    # Use filename from the url if customized filename is given
+    # Use filename from the url if no customized filename is given
     if filepath is None:
         filepath = url.split('/')[-1]
 
