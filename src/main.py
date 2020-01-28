@@ -6,11 +6,11 @@ from argparse import ArgumentParser
 from dotenv import load_dotenv
 
 import menu_downloader
-from database_handler import DatabaseHandler
+from database import connect, breakfast_insert_many, dinner_insert_many
 from parser import parse_menu
 
 
-def get_menu(start_date, num_days, db):
+def get_menu(start_date, num_days):
     """download, parse and upload menu to mongodb"""
     breakfast_ops = []
     dinner_ops = []
@@ -36,8 +36,8 @@ def get_menu(start_date, num_days, db):
 
         os.remove(file_name)
 
-    db.breakfast_insert_many(breakfast_ops)
-    db.dinner_insert_many(dinner_ops)
+    breakfast_insert_many(breakfast_ops)
+    dinner_insert_many(dinner_ops)
 
 
 if __name__ == '__main__':
@@ -45,7 +45,8 @@ if __name__ == '__main__':
     date_format = '%Y-%m-%d'
     parser = ArgumentParser(description='Scrape RC meal menus')
     parser.add_argument('-L', '--loglevel', default='INFO',
-                        choices=['CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG'],
+                        choices=['CRITICAL', 'ERROR',
+                                 'WARNING', 'INFO', 'DEBUG'],
                         help='The logging level')
     parser.add_argument('-s', '--start-date',
                         default=datetime.date.today().strftime(date_format),
@@ -59,7 +60,9 @@ if __name__ == '__main__':
     days = args.days
 
     load_dotenv()
-    logging.basicConfig(format='%(asctime)s-%(levelname)s: %(message)s', level=numeric_loglevel)
-    logging.info(f'Scraping meal menus for {days} days starting from {start_date.strftime(date_format)}')
-    db = DatabaseHandler()
-    get_menu(start_date, days, db)
+    logging.basicConfig(
+        format='%(asctime)s-%(levelname)s: %(message)s', level=numeric_loglevel)
+    logging.info(
+        f'Scraping meal menus for {days} days starting from {start_date.strftime(date_format)}')
+    connect()
+    get_menu(start_date, days)

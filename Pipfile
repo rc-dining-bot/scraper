@@ -10,8 +10,8 @@ pylint = "*"
 [packages]
 tabula-py = "*"
 requests = "*"
-pymongo = {extras = ["srv"],version = "*"}
+psycopg2 = "*"
 python-dotenv = "*"
 
 [requires]
-python_version = "3.8"
+python_version = "3.6"

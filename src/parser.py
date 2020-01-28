@@ -43,7 +43,6 @@ def parse_df_for_dinner(df, date):
 
 def extract_breakfast(data, date):
     breakfast = {'date': date,
-                 'day': data[0][1],
                  'self_service': extract_food_items(1, 5, data),
                  'western': extract_food_items(6, 11, data),
                  'dim_sum_congee_noodle': extract_food_items(12, 13, data),
@@ -64,7 +63,6 @@ def extract_breakfast(data, date):
 
 def extract_dinner(data, date):
     dinner = {'date': date,
-              'day': data[0][1],
               'self_service': extract_food_items(1, 5, data),
               'western': extract_food_items(6, 9, data),
               'noodle': extract_food_items(11, 12, data),
