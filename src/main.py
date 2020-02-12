@@ -23,7 +23,7 @@ def get_menu(start_date, num_days):
             logging.error(f'No menu available on {str(date_to_search)}')
             continue
 
-        breakfast, dinner = parse_menu(file_name)
+        breakfast, dinner = parse_menu(file_name, date_to_search)
         if breakfast:
             breakfast_ops.append(breakfast)
         else:
@@ -36,8 +36,10 @@ def get_menu(start_date, num_days):
 
         os.remove(file_name)
 
-    breakfast_insert_many(breakfast_ops)
-    dinner_insert_many(dinner_ops)
+    if len(breakfast_ops) > 0:
+        breakfast_insert_many(breakfast_ops)
+    if len(dinner_ops) > 0:
+        dinner_insert_many(dinner_ops)
 
 
 if __name__ == '__main__':

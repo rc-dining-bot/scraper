@@ -1,10 +1,11 @@
 from tabula import read_pdf
 
 
-def parse_menu(file_name):
+def parse_menu(file_name, date_to_search):
     """returns a tuple of breakfast and dinner json objects"""
     df = parse_menu_to_df(file_name)
-    date = parse_file_name_for_date(file_name)
+    # date = parse_file_name_for_date(file_name)
+    date = date_to_search.strftime('%y%m%d')
     breakfast = parse_df_for_breakfast(df, date)
     dinner = parse_df_for_dinner(df, date)
 
@@ -13,7 +14,7 @@ def parse_menu(file_name):
 
 def parse_file_name_for_date(file_name):
     name = file_name.split('/')[-1]
-    date_str = name[:6]
+    date_str = name[7:13]
     return date_str
 
 
