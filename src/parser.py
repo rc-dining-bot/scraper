@@ -23,13 +23,6 @@ def parse_menu(file_name, date_to_search):
 
     return breakfast, dinner
 
-
-def parse_file_name_for_date(file_name):
-    name = file_name.split('/')[-1]
-    date_str = name[7:13]
-    return date_str
-
-
 def parse_menu_to_df(file_name):
     """returns a dataframe containing the breakfast and dinner menus"""
     df = read_pdf(file_name, pages='1', multiple_tables=True, lattice=True)
