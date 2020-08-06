@@ -1,18 +1,15 @@
 import logging
-
 import datetime
 import requests
 
 
 def construct_menu_url(date):
     year = date.year
-    # date_diff = (date.date() - datetime.date(2020,3,8))
-    date_diff = date.date() - datetime.date(2020, 2, 9)
-    week_num = 5 + date_diff.days // 7
-    # new_date = (datetime.date(2020, 1, 12) + date_diff)
-    # timestamp = new_date.strftime('%y%m%d-%a')
-    timestamp = date.strftime('%y%m%d-%a')
-    return f'https://uci.nus.edu.sg/ohs/wp-content/uploads/sites/3/{year}/02/Week-{week_num}-{timestamp}-Daily-Menu.pdf'
+    # TODO: Temporary hack for the PDF URL
+    date_diff = (date.date() - datetime.date(2020,8,3))
+    week_num = 1 + date_diff.days // 7
+    day_of_week = date.strftime('%a')
+    return f'https://uci.nus.edu.sg/ohs/wp-content/uploads/sites/3/{year}/08/Wk-{week_num}-{day_of_week}.pdf'
 
 
 def send_request_for_menu_pdf(url):
