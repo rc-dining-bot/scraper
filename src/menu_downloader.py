@@ -1,18 +1,28 @@
 import logging
-
 import datetime
 import requests
 
+from html_parser import date_to_menu_map, CalendarParser
 
 def construct_menu_url(date):
-    year = date.year
-    # date_diff = (date.date() - datetime.date(2020,3,8))
-    date_diff = date.date() - datetime.date(2020, 2, 9)
-    week_num = 5 + date_diff.days // 7
-    # new_date = (datetime.date(2020, 1, 12) + date_diff)
-    # timestamp = new_date.strftime('%y%m%d-%a')
-    timestamp = date.strftime('%y%m%d-%a')
-    return f'https://uci.nus.edu.sg/ohs/wp-content/uploads/sites/3/{year}/02/Week-{week_num}-{timestamp}-Daily-Menu.pdf'
+    if date in date_to_menu_map:
+        return date_to_menu_map[date]
+    # Alternative URLs to circumvent bot protection
+    urls = [
+        'https://uci.nus.edu.sg/ohs/current-residents/students/daily-menu-2/',
+        'https://webcache.googleusercontent.com/search?q=cache:https://uci.nus.edu.sg/ohs/current-residents/students/daily-menu-2/'
+    ]
+    for url in urls:
+        response = requests.get(url)
+        if response.status_code == 200:
+            break
+        logging.error('Request to %s unsuccessful', url)
+    CalendarParser().feed(response.text)
+    if date in date_to_menu_map:
+        return date_to_menu_map[date]
+    else:
+        logging.error('No menu found for %s', date)
+        return None
 
 
 def send_request_for_menu_pdf(url):
