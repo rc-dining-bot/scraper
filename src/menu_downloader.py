@@ -9,6 +9,8 @@ def construct_menu_url(date):
     date_diff = (date.date() - datetime.date(2020,8,3))
     week_num = 1 + date_diff.days // 7
     day_of_week = date.strftime('%a')
+    # special case for thursdays
+    day_of_week = day_of_week if day_of_week != 'Thu' else 'Thurs'
     return f'https://uci.nus.edu.sg/ohs/wp-content/uploads/sites/3/{year}/08/Wk-{week_num}-{day_of_week}.pdf'
 
 

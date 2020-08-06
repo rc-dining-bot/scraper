@@ -4,10 +4,22 @@ from tabula import read_pdf
 def parse_menu(file_name, date_to_search):
     """returns a tuple of breakfast and dinner json objects"""
     df = parse_menu_to_df(file_name)
-    # date = parse_file_name_for_date(file_name)
     date = date_to_search.strftime('%y%m%d')
-    breakfast = parse_df_for_breakfast(df, date)
-    dinner = parse_df_for_dinner(df, date)
+    day_of_week = date_to_search.weekday()
+    # sundays don't have breakfast
+    if (day_of_week == 6): 
+        breakfast = None
+    else:
+        breakfast = parse_df_for_breakfast(df[0], date)
+
+    # saturdays don't have dinner.
+    if day_of_week == 5:
+        dinner = None
+    # but sundays only have dinner, so index needs to be 0
+    elif day_of_week == 6:
+        dinner = parse_df_for_dinner(df[0], date)
+    else:
+        dinner = parse_df_for_dinner(df[1], date)
 
     return breakfast, dinner
 
@@ -26,20 +38,18 @@ def parse_menu_to_df(file_name):
 
 def parse_df_for_breakfast(df, date):
     """returns a json object containing the breakfast menu"""
-    breakfast_df = df[0]
-    if len(breakfast_df) < 36:  # no menu
+    if len(df) < 36:  # no menu
         return None
 
-    return extract_breakfast(breakfast_df.values, date)
+    return extract_breakfast(df.values, date)
 
 
 def parse_df_for_dinner(df, date):
     """returns a json object containing the dinner menu"""
-    dinner_df = df[1]
-    if len(dinner_df) < 38:  # no menu
+    if len(df) < 38:  # no menu
         return None
 
-    return extract_dinner(dinner_df.values, date)
+    return extract_dinner(df.values, date)
 
 
 def extract_breakfast(data, date):
