@@ -12,7 +12,6 @@ tabula-py = "*"
 requests = "*"
 psycopg2 = "*"
 python-dotenv = "*"
-lru-dict = "*"
 
 [requires]
 python_version = "3.6"

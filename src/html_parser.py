@@ -1,11 +1,9 @@
 from datetime import datetime
 from html.parser import HTMLParser
-from lru import LRU
 
-LRU_CACHE_SIZE = 500
 IGNORED_WORDS = set(["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"])
 
-date_to_menu_map = LRU(LRU_CACHE_SIZE)
+date_to_menu_map = {}
 
 class CalendarParser(HTMLParser):
     def __init__(
