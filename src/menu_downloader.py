@@ -14,7 +14,7 @@ def construct_menu_url(date):
     ]
     for url in urls:
         response = requests.get(url)
-        if response.status_code == 200:
+        if response.status_code == 200 and (not "Request unsuccessful" in response.text):
             break
         logging.error('Request to %s unsuccessful', url)
     CalendarParser().feed(response.text)
