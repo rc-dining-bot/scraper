@@ -24,7 +24,6 @@ def construct_menu_url(date):
         logging.error('No menu found for %s', date)
         return None
 
-
 def send_request_for_menu_pdf(url):
     # Spoof the user agent to (hopefully) get past Incapsula
     user_agent = ('Mozilla/5.0 (Windows NT 6.1) '
