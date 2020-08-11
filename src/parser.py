@@ -1,21 +1,28 @@
 from tabula import read_pdf
 
 
-def parse_menu(file_name):
+def parse_menu(file_name, date_to_search):
     """returns a tuple of breakfast and dinner json objects"""
     df = parse_menu_to_df(file_name)
-    date = parse_file_name_for_date(file_name)
-    breakfast = parse_df_for_breakfast(df, date)
-    dinner = parse_df_for_dinner(df, date)
+    date = date_to_search.strftime('%y%m%d')
+    breakfast_df, dinner_df = parse_breaskfast_and_dinner_dfs(df)
+    breakfast = parse_breakfast_df(breakfast_df, date)
+    dinner = parse_dinner_df(dinner_df, date)
 
     return breakfast, dinner
 
 
-def parse_file_name_for_date(file_name):
-    name = file_name.split('/')[-1]
-    date_str = name[:6]
-    return date_str
-
+def parse_breaskfast_and_dinner_dfs(df):
+    """returns a tuple of (breakfast present, dinner present)"""
+    if len(df) == 2:
+        return df[0], df[1]
+    elif len(df) == 1:
+        menu_name = df[0].columns[0]
+        if 'BREAKFAST' in menu_name:
+            return df[0], None
+        if 'DINNER' in menu_name:
+            return None, df[0]
+    return None, None
 
 def parse_menu_to_df(file_name):
     """returns a dataframe containing the breakfast and dinner menus"""
@@ -23,27 +30,24 @@ def parse_menu_to_df(file_name):
     return df
 
 
-def parse_df_for_breakfast(df, date):
+def parse_breakfast_df(breakfast_df, date):
     """returns a json object containing the breakfast menu"""
-    breakfast_df = df[0]
-    if len(breakfast_df) < 36:  # no menu
+    if breakfast_df is None or len(breakfast_df) < 36:  # no menu
         return None
 
-    return extract_breakfast(breakfast_df.values, date)
+    return extract_breakfast(df.values, date)
 
 
-def parse_df_for_dinner(df, date):
+def parse_dinner_df(dinner_df, date):
     """returns a json object containing the dinner menu"""
-    dinner_df = df[1]
-    if len(dinner_df) < 38:  # no menu
+    if dinner_df is None or len(dinner_df) < 38:  # no menu
         return None
 
-    return extract_dinner(dinner_df.values, date)
+    return extract_dinner(df.values, date)
 
 
 def extract_breakfast(data, date):
     breakfast = {'date': date,
-                 'day': data[0][1],
                  'self_service': extract_food_items(1, 5, data),
                  'western': extract_food_items(6, 11, data),
                  'dim_sum_congee_noodle': extract_food_items(12, 13, data),
@@ -64,7 +68,6 @@ def extract_breakfast(data, date):
 
 def extract_dinner(data, date):
     dinner = {'date': date,
-              'day': data[0][1],
               'self_service': extract_food_items(1, 5, data),
               'western': extract_food_items(6, 9, data),
               'noodle': extract_food_items(11, 12, data),

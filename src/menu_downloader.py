@@ -1,15 +1,28 @@
 import logging
+import datetime
 import requests
 
+from html_parser import date_to_menu_map, CalendarParser
 
 def construct_menu_url(date):
-    year = date.year
-    # TODO: Temporary hack for the PDF URL
-    date_diff = (date.date() - datetime.date(2020,8,3))
-    week_num = 1 + date_diff.days // 7
-    day_of_week = date.strftime('%a')
-    return f'https://uci.nus.edu.sg/ohs/wp-content/uploads/sites/3/{year}/08/Wk-{week_num}-{day_of_week}.pdf'
-
+    if date in date_to_menu_map:
+        return date_to_menu_map[date]
+    # Alternative URLs to circumvent bot protection
+    urls = [
+        'https://uci.nus.edu.sg/ohs/current-residents/students/daily-menu-2/',
+        'https://webcache.googleusercontent.com/search?q=cache:https://uci.nus.edu.sg/ohs/current-residents/students/daily-menu-2/'
+    ]
+    for url in urls:
+        response = requests.get(url)
+        if response.status_code == 200 and (not "Request unsuccessful" in response.text):
+            break
+        logging.error('Request to %s unsuccessful', url)
+    CalendarParser().feed(response.text)
+    if date in date_to_menu_map:
+        return date_to_menu_map[date]
+    else:
+        logging.error('No menu found for %s', date)
+        return None
 
 def send_request_for_menu_pdf(url):
     # Spoof the user agent to (hopefully) get past Incapsula
