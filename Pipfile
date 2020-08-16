@@ -10,7 +10,7 @@ pylint = "*"
 [packages]
 tabula-py = "*"
 requests = "*"
-psycopg-binary = "*"
+psycopg2-binary = "*"
 python-dotenv = "*"
 
 [requires]
