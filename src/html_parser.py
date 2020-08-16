@@ -50,5 +50,7 @@ class CalendarParser(HTMLParser):
             elif self._current_href is not None:
                 date_string = ' '.join([self._current_day, self._current_month_year])
                 formatted_date_string = datetime.strptime(date_string, '%d %B %Y')
-                date_to_menu_map[formatted_date_string] = self._current_href
+                # change link to https
+                url = 'https://' + self._current_href[7:]
+                date_to_menu_map[formatted_date_string] = url
                 self._current_href = None

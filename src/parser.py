@@ -35,7 +35,7 @@ def parse_breakfast_df(breakfast_df, date):
     if breakfast_df is None or len(breakfast_df) < 36:  # no menu
         return None
 
-    return extract_breakfast(df.values, date)
+    return extract_breakfast(breakfast_df.values, date)
 
 
 def parse_dinner_df(dinner_df, date):
@@ -43,7 +43,7 @@ def parse_dinner_df(dinner_df, date):
     if dinner_df is None or len(dinner_df) < 38:  # no menu
         return None
 
-    return extract_dinner(df.values, date)
+    return extract_dinner(dinner_df.values, date)
 
 
 def extract_breakfast(data, date):
